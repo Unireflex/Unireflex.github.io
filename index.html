@@ -1,0 +1,1159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>UniReflex: Plug-and-Play Force Control for Any Pre-trained Generative Policy via Fast-Slow Reflex Coupling</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer-when-downgrade" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png?v=20260525" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png?v=20260525" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png?v=20260525" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style type="text/css">
+  body {
+    font-family: "Crimson Text", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    margin: 0;
+    width: 100%;
+  }
+
+  pre {
+    background-color: #f6f8fa;
+    padding: 16px;
+  }
+
+  code {
+    font-family: "SFMono-Regular", "Consolas", "Liberation Mono", "Menlo", monospace;
+    overflow: scroll;
+  }
+
+  .description {
+    max-width: 1000px;
+    padding: 0px;
+  }
+
+  h1 {
+    font-family: "Source Sans Pro";
+    font-weight: 300;
+  }
+
+  div {
+    max-width: 95%;
+    margin: auto;
+    padding: 10px;
+  }
+
+  .table-like {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+
+  .box {
+    padding: 0px;
+    text-align: center;
+    width: 50%;
+  }
+
+  @media screen and (max-width: 1279px) {
+    .box {
+      width: 100%;
+    }
+  }
+
+  .table-like hr {
+    width: 100%;
+    flex-basis: 100%;
+    height: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .disclaimerbox {
+    background-color: #eee;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 20px;
+  }
+
+  video.header-vid {
+    height: 140px;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+  }
+
+  img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  iframe {
+    max-width: 100%;
+  }
+
+  img.header-img {
+    height: 140px;
+    border: 1px solid black;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+  }
+
+  img.rounded {
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+  }
+
+  a:link,
+  a:visited {
+    color: #1367a7;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #208799;
+  }
+
+  td.dl-link {
+    height: 160px;
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .layered-paper-big {
+    box-shadow:
+      0px 0px 1px 1px rgba(0, 0, 0, 0.35),
+      5px 5px 0 0px #fff,
+      5px 5px 1px 1px rgba(0, 0, 0, 0.35),
+      10px 10px 0 0px #fff,
+      10px 10px 1px 1px rgba(0, 0, 0, 0.35),
+      15px 15px 0 0px #fff,
+      15px 15px 1px 1px rgba(0, 0, 0, 0.35),
+      20px 20px 0 0px #fff,
+      20px 20px 1px 1px rgba(0, 0, 0, 0.35),
+      25px 25px 0 0px #fff,
+      25px 25px 1px 1px rgba(0, 0, 0, 0.35);
+    margin-left: 10px;
+    margin-right: 45px;
+  }
+
+  .layered-paper {
+    box-shadow:
+      0px 0px 1px 1px rgba(0, 0, 0, 0.35),
+      5px 5px 0 0px #fff,
+      5px 5px 1px 1px rgba(0, 0, 0, 0.35),
+      10px 10px 0 0px #fff,
+      10px 10px 1px 1px rgba(0, 0, 0, 0.35);
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 30px;
+    margin-bottom: 5px;
+  }
+
+  .vert-cent {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    max-width: 1100px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  }
+
+  #authors td {
+    padding-bottom: 5px;
+    padding-top: 30px;
+  }
+
+  .mySlides {
+    display: none
+  }
+
+  .slideshow-container {
+    max-width: 1280px;
+    position: relative;
+    margin: auto;
+  }
+
+  .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 25px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+  }
+
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .prev:hover,
+  .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .caption {
+    color: #000000;
+    font-size: 25;
+    width: 100%;
+    text-align: center;
+    padding: 0px;
+  }
+
+  .numbertext {
+    color: #000000;
+    font-size: 18px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+  }
+
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+
+  .active,
+  .dot:hover {
+    background-color: #717171;
+  }
+
+  .fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: .4
+    }
+
+    to {
+      opacity: 1
+    }
+  }
+
+  @media only screen and (max-width: 300px) {
+
+    .prev,
+    .next,
+    .text {
+      font-size: 11px
+    }
+  }
+
+  .top-menu {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border-bottom: 1px solid #e3e3e3;
+    color: #000;
+  }
+
+  .top-menu-details {
+    max-width: 1000px;
+    width: 92%;
+    margin: 0 auto;
+    padding: 0px 0px;
+    box-sizing: border-box;
+  }
+
+  .top-menu-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    gap: 12px;
+    padding: 0;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 18px;
+  }
+
+  .top-menu-content>* {
+    margin: 0;
+  }
+
+  .top-menu-content a {
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 0 9px;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .top-menu-content a:hover {
+    background: #f4f4f4;
+  }
+
+  .top-menu-details,
+  .top-menu-details a {
+    color: #000;
+  }
+
+  .table-figure-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: "Source Sans Pro", sans-serif;
+    margin: 28px 0 10px;
+  }
+
+  .table-figure-note {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.45;
+    margin: 0 0 14px;
+  }
+
+  .table-figure-wrap {
+    margin: 0 0 32px;
+  }
+
+  .video-matrix {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Global `div { max-width: 95%; }` shrinks nested carousels; flush matrix to #exp (900px) like other sections */
+  #exp .video-matrix div {
+    max-width: none;
+  }
+
+  #exp .video-matrix > .video-matrix-row,
+  #exp .video-carousel {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #exp .video-matrix > .video-matrix-row {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #exp .video-matrix-groups {
+    padding: 0;
+  }
+
+  #exp .video-carousel {
+    padding: 4px 0 10px;
+  }
+
+  #exp .video-carousel-viewport,
+  #exp .video-carousel-slide,
+  #exp .video-carousel-head,
+  #exp .video-carousel-head-sub,
+  #exp .video-matrix-label {
+    padding: 0;
+  }
+
+  .video-matrix-row {
+    margin: 0;
+    padding: 0 0 28px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .video-matrix-row:last-child {
+    padding-bottom: 12px;
+  }
+
+  .video-matrix-row:not(:last-child)::after {
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 24px auto 0;
+    max-width: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  }
+
+  .video-matrix-row-title {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  .video-matrix-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .video-carousel {
+    position: relative;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 4px 0 10px;
+    box-sizing: border-box;
+    min-height: 0;
+  }
+
+  @media screen and (max-width: 960px) {
+    .video-matrix-groups {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+
+  .video-carousel-head {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    color: #1d1d1f;
+    margin: 0 0 8px;
+    font-family: "Source Sans Pro", sans-serif;
+    line-height: 1.3;
+  }
+
+  .video-carousel-head-sub {
+    font-weight: 400;
+    font-size: 11px;
+    color: #86868b;
+  }
+
+  .video-carousel-viewport {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .video-carousel-slide {
+    display: none;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .video-carousel-slide.active {
+    display: block;
+  }
+
+  .video-carousel-slide .video-matrix-label {
+    min-height: 1.6em;
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    color: #86868b;
+    background-color: #f5f5f7;
+    margin-bottom: 0;
+    padding: 4px 0;
+    border-radius: 4px 4px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+
+  .video-carousel-slide video {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .video-carousel-viewport > .video-carousel-btn {
+    top: 50%;
+  }
+
+  .video-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 32px;
+    height: 44px;
+    pointer-events: auto;
+    border: none;
+    background: rgba(255, 255, 255, 0.94);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 6px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    color: #222;
+    padding: 0;
+  }
+
+  .video-carousel-btn:hover {
+    background: #f0f0f0;
+  }
+
+  .video-carousel-btn-prev {
+    left: 2px;
+  }
+
+  .video-carousel-btn-next {
+    right: 2px;
+  }
+
+  .video-carousel-dots {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .video-carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: #c8c8c8;
+    margin: 0 4px;
+    cursor: pointer;
+    padding: 0;
+    vertical-align: middle;
+  }
+
+  .video-carousel-dot.active {
+    background: #444;
+  }
+
+  .video-matrix-label {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin: 0 0 6px;
+    font-family: "Source Sans Pro", sans-serif;
+  }
+
+  .video-matrix-placeholder {
+    width: 100%;
+    aspect-ratio: 854 / 480;
+    background-color: #fafafa;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+</style>
+</head>
+
+<body>
+  <div class="top-menu">
+    <div class="top-menu-details">
+      <div class="top-menu-content">
+        <a href="#top">Home</a>
+        <a href="#video">Video</a>
+        <a href="#abstract">Abstract</a>
+        <a href="#intro">Introduction</a>
+        <a href="#method">Method</a>
+        <a href="#experiments">Experiments</a>
+        <a href="#exp">Demos</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="top">
+    <center><span style="font-size:44px;font-weight:bold;font-family:Source Sans Pro;">UniReflex: Plug-and-Play Force
+        Control for Any Pre-trained Generative Policy <br>via Fast-Slow Reflex Coupling</span></center><br />
+  </div>
+
+  <div class="table-like" id="video" style="justify-content:space-evenly;max-width:800px;margin:auto;">
+    <video id="head-video" width="800" autoplay playsinline controls loop preload="auto">
+      <source src="assets/videos/website_head.mp4?v=2026052619" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
+    <hr>
+    <center><span style="font-size:25px" class="line-break">
+        Anonymous authors (CORL 2026 double-blind submission)
+      </span></center>
+  </div>
+  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
+    <hr>
+    <center><span style="font-size:20px" class="line-break">Affiliations omitted for review</span>
+    </center>
+  </div>
+  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
+    <hr>
+    <center><span style="font-size:25px" class="line-break">&nbsp;&nbsp;&nbsp;&nbsp;[Paper (coming soon)]</span><span style="font-size:25px"
+        class="line-break">&nbsp;&nbsp;&nbsp;&nbsp;[Code (coming soon)]</span></center>
+  </div>
+
+  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
+    <hr>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="abstract" align="justify">
+    <hr>
+    <center>
+      <h1>Abstract</h1>
+    </center>
+    <p>
+      Generative imitation learning policies excel at trajectory planning but lack closed-loop force regulation, while existing force-aware adaptations typically require costly retraining.
+      We present <b><i>UniReflex</i></b>, a universal plug-and-play framework that endows any frozen generative policy with active force control without backbone fine-tuning.
+      By non-invasively intercepting deep latent representations from the action head, UniReflex drives a fast reflex network that decouples active force exertion from external interaction response.
+      Inspired by human muscle co-contraction, this scheme predicts anisotropic stiffness for genuine active force exertion.
+      Furthermore, UniReflex integrates an adaptive gating mechanism that enables seamless transitions between position-dominant planning and force-dominant execution.
+      Real-world bimanual experiments demonstrate that UniReflex significantly improves contact stability and success rates while preserving original position accuracy.
+      Notably, our approach achieves ~25&ndash;~66&times; lower per-step backward latency relative to joint training strategies on the evaluated backbones.
+    </p>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="intro" align="justify">
+    <hr>
+    <center>
+      <h1>Introduction & Taxonomy</h1>
+    </center>
+    <p>
+      Generative imitation policies are typically position-based planners without closed-loop wrench regulation. 
+      UniReflex introduces a separately trained fast reflex that reads internal trajectory representations from the 
+      frozen slow policy and closes the loop on force at a high rate.
+    </p>
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/table_compare.png?v=2026052619" loading="lazy" alt="Taxonomy of force-control methods" class="rounded" style="width:900px;">
+    </div>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="method" align="justify">
+    <hr>
+    <center>
+      <h1>Method</h1>
+    </center>
+    <p>
+      <b>UniReflex Architecture.</b> We hook the deep feature map of the generative action head to extract an intent tensor. 
+      The reflex GRU consumes proprioception and this intent tensor to emit reference poses, reference wrenches, and 
+      stiffness encodings for decoupled force control. The system operates in a tri-rate closed loop: visual planning 
+      visual planning, tactile reflex, and PID force tracking (~1 kHz).
+    </p>
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/system.jpg?v=2026052619" loading="lazy" alt="UniReflex system overview" class="rounded" style="width:900px;">
+    </div>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="experiments" align="justify">
+    <hr>
+    <center>
+      <h1>Experiments</h1>
+    </center>
+    <p>
+      We evaluate UniReflex across five bimanual contact-rich tasks, comparing it against frozen backbones 
+      (DP, \(\pi_0\), DreamZero) and force-aware baselines (ForceVLA, TA-VLA, RDP).
+    </p>
+
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/table_success_rate.png?v=2026052619" loading="lazy" alt="Success rate comparison" class="rounded" style="width:900px;">
+    </div>
+
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/tasks.jpg?v=2026052619" loading="lazy" alt="Evaluation tasks" class="rounded" style="width:900px;">
+    </div>
+
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/table_speed.png?v=2026052619" loading="lazy" alt="Training efficiency" class="rounded" style="width:900px;">
+    </div>
+
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/q3q4.jpg?v=2026052619" loading="lazy" alt="Qualitative results" class="rounded" style="width:900px;">
+    </div>
+  </div>
+
+  <div style="width:100%;max-width:900px;margin:0 auto;padding:0;box-sizing:border-box;" id="exp" align="justify">
+    <hr>
+    <center>
+      <h1>Robot demonstration videos</h1>
+    </center>
+    <p>
+      We present 5 evaluation tasks. Each row corresponds to one task, featuring 3 columns: 
+      <b>(1)</b> Frozen backbones, <b>(2)</b> Force-aware baselines, and <b>(3)</b> UniReflex with different backbones. 
+      Use the left/right arrows or the dots below to switch between the 3 videos in each column.
+    </p>
+
+    <div class="video-matrix">
+
+      <!-- 1. Flip Chip Box -->
+      <div class="video-matrix-row">
+        <div class="video-matrix-row-title">1. Flip Chip Box</div>
+        <div class="video-matrix-groups">
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Frozen backbones<div class="video-carousel-head-sub">DP · \(\pi_0\) · DreamZero</div></div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active">
+                <div class="video-matrix-label">Diffusion Policy (DP)</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_dp.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">\(\pi_0\)</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_pi.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">DreamZero (DZ)</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_dz.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots">
+              <button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="2 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="3 / 3"></button>
+            </div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Force-aware baselines<div class="video-carousel-head-sub">ForceVLA · TA-VLA · RDP</div></div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active">
+                <div class="video-matrix-label">ForceVLA</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_forcevla.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">TA-VLA</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_tavla.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">RDP</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_rdp.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots">
+              <button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="2 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="3 / 3"></button>
+            </div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">UniReflex + backbone<div class="video-carousel-head-sub">+DP · +\(\pi_0\) · +DZ</div></div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active">
+                <div class="video-matrix-label">UniReflex + DP</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_unidp.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">UniReflex + \(\pi_0\)</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_unipi.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+              <div class="video-carousel-slide">
+                <div class="video-matrix-label">UniReflex + DreamZero</div>
+                <video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/chip_unidz.mp4?v=2026052619" type="video/mp4"></video>
+              </div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots">
+              <button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="2 / 3"></button>
+              <button type="button" class="video-carousel-dot" aria-label="3 / 3"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Plug Charger -->
+      <div class="video-matrix-row">
+        <div class="video-matrix-row-title">2. Plug Charger</div>
+        <div class="video-matrix-groups">
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Frozen backbones</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_dp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">\(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_pi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">DreamZero</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_dz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Force-aware baselines</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">ForceVLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_forcevla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">TA-VLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_tavla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">RDP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_rdp.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">UniReflex + backbone</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">UniReflex + DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_unidp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + \(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_unipi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + DZ</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/plug_unidz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Peel Note -->
+      <div class="video-matrix-row">
+        <div class="video-matrix-row-title">3. Peel Note</div>
+        <div class="video-matrix-groups">
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Frozen backbones</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_dp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">\(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_pi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">DreamZero</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_dz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Force-aware baselines</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">ForceVLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_forcevla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">TA-VLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_tavla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">RDP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_rdp.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">UniReflex + backbone</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">UniReflex + DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_unidp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + \(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_unipi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + DZ</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/peel_unidz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Wipe (Curve) -->
+      <div class="video-matrix-row">
+        <div class="video-matrix-row-title">4. Wipe (Curve)</div>
+        <div class="video-matrix-groups">
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Frozen backbones<div class="video-carousel-head-sub">DP · \(\pi_0\) · DZ</div></div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_dp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">\(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_pi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">DreamZero</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_dz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Force-aware baselines</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">ForceVLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_forcevla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">TA-VLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_tavla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">RDP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_rdp.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">UniReflex + backbone</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">UniReflex + DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_unidp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + \(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_unipi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + DZ</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_curve_unidz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Wipe (Incline) -->
+      <div class="video-matrix-row">
+        <div class="video-matrix-row-title">5. Wipe (Incline)</div>
+        <div class="video-matrix-groups">
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Frozen backbones</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_dp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">\(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_pi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">DreamZero</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_dz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">Force-aware baselines</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">ForceVLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_forcevla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">TA-VLA</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_tavla.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">RDP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_rdp.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+          <div class="video-carousel" data-video-carousel>
+            <div class="video-carousel-head">UniReflex + backbone</div>
+            <div class="video-carousel-viewport">
+              <div class="video-carousel-slide active"><div class="video-matrix-label">UniReflex + DP</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_unidp.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + \(\pi_0\)</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_unipi.mp4?v=2026052619" type="video/mp4"></video></div>
+              <div class="video-carousel-slide"><div class="video-matrix-label">UniReflex + DZ</div><video muted playsinline controls loop preload="none"><source src="assets/videos/matrix_mute_2x/wipe_incline_unidz.mp4?v=2026052619" type="video/mp4"></video></div>
+            </div>
+            <button type="button" class="video-carousel-btn video-carousel-btn-prev" aria-label="Previous">❮</button>
+            <button type="button" class="video-carousel-btn video-carousel-btn-next" aria-label="Next">❯</button>
+            <div class="video-carousel-dots"><button type="button" class="video-carousel-dot active" aria-label="1 / 3"></button><button type="button" class="video-carousel-dot" aria-label="2 / 3"></button><button type="button" class="video-carousel-dot" aria-label="3 / 3"></button></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="force_tracking" align="justify">
+    <hr>
+    <center>
+      <h1>Force-centric evaluation clips</h1>
+    </center>
+    <p>
+      Comparison of force-centric execution. Use the arrows to switch between frozen backbones, force-aware baselines, and UniReflex.
+    </p>
+    <div id="force-switcher" style="position:relative;width:800px;margin:0 auto;">
+      <div class="force-slide" style="display:block;">
+        <p style="width:800px;text-align:center;font-size:16px;color:#444;margin:12px auto 4px;"><b>Frozen backbones</b>: DP, \(\pi_0\), DreamZero</p>
+        <video width="800" muted playsinline controls loop>
+          <source src="assets/videos/smooth/smooth1.mp4?v=2026052619" type="video/mp4">
+        </video>
+      </div>
+      <div class="force-slide" style="display:none;">
+        <p style="width:800px;text-align:center;font-size:16px;color:#444;margin:12px auto 4px;"><b>Force-aware baselines</b>: ForceVLA, TA-VLA, RDP</p>
+        <video width="800" muted playsinline controls loop>
+          <source src="assets/videos/smooth/smooth2.mp4?v=2026052619" type="video/mp4">
+        </video>
+      </div>
+      <div class="force-slide" style="display:none;">
+        <p style="width:800px;text-align:center;font-size:16px;color:#444;margin:12px auto 4px;"><b>UniReflex (Ours)</b></p>
+        <video width="800" muted playsinline controls loop>
+          <source src="assets/videos/smooth/smooth3.mp4?v=2026052619" type="video/mp4">
+        </video>
+      </div>
+      <button type="button" id="force-prev" style="position:absolute;top:50%;left:-40px;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;cursor:pointer;font-size:20px;width:32px;height:44px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.1);color:#222;z-index:3;">&#10094;</button>
+      <button type="button" id="force-next" style="position:absolute;top:50%;right:-40px;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;cursor:pointer;font-size:20px;width:32px;height:44px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.1);color:#222;z-index:3;">&#10095;</button>
+      <div style="text-align:center;margin-top:10px;">
+        <button type="button" class="force-dot" style="width:10px;height:10px;border-radius:50%;border:none;background:#444;margin:0 4px;cursor:pointer;padding:0;"></button>
+        <button type="button" class="force-dot" style="width:10px;height:10px;border-radius:50%;border:none;background:#c8c8c8;margin:0 4px;cursor:pointer;padding:0;"></button>
+        <button type="button" class="force-dot" style="width:10px;height:10px;border-radius:50%;border:none;background:#c8c8c8;margin:0 4px;cursor:pointer;padding:0;"></button>
+      </div>
+    </div>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="reference-force" align="justify">
+    <hr>
+    <center>
+      <h1>Reference Force Tracking</h1>
+    </center>
+    <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
+      <video width="800" muted playsinline controls loop>
+        <source src="assets/videos/matrix/Reference Force.mp4?v=2026052619" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div style="width:900px; margin:0 auto" id="high-frequency" align="justify">
+    <hr>
+    <center>
+      <h1>High-frequency reflex response</h1>
+    </center>
+    <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
+      <video width="800" muted playsinline controls loop>
+        <source src="assets/videos/high_frequency.mp4?v=2026052619" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div style="max-width:900px">
+    <div class="description">
+      <p align="right">
+        Website template: <a href="https://bland.website/">Allan Zhou</a>
+        <br>
+        Modified from <a href="https://tonyzhaozh.github.io/aloha/">ALOHA @ Tony Z. Zhao</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Lazy-load videos: only load when scrolled into view
+      if ("IntersectionObserver" in window) {
+        var lazyVideos = document.querySelectorAll('video[preload="none"]');
+        var videoObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var video = entry.target;
+              video.preload = "auto";
+              video.load();
+              videoObserver.unobserve(video);
+            }
+          });
+        }, { rootMargin: "200px" });
+        lazyVideos.forEach(function (v) { videoObserver.observe(v); });
+      }
+
+      function pauseVideos(root) {
+        root.querySelectorAll("video").forEach(function (v) {
+          try { v.pause(); } catch (e) { }
+        });
+      }
+
+      document.querySelectorAll("[data-video-carousel]").forEach(function (root) {
+        var viewport = root.querySelector(".video-carousel-viewport");
+        var slides = root.querySelectorAll(".video-carousel-slide");
+        var dots = root.querySelectorAll(".video-carousel-dot");
+        var prev = root.querySelector(".video-carousel-btn-prev");
+        var next = root.querySelector(".video-carousel-btn-next");
+        if (viewport && prev && next) {
+          viewport.appendChild(prev);
+          viewport.appendChild(next);
+        }
+        var n = slides.length;
+        if (!n) return;
+        var idx = 0;
+        function playActiveSlide(resetTime) {
+          var cur = slides[idx];
+          if (!cur) return;
+          var v = cur.querySelector("video");
+          if (!v) return;
+          if (resetTime) {
+            try { v.currentTime = 0; } catch (e) { }
+          }
+          if (v.paused) {
+            var p = v.play();
+            if (p && typeof p.catch === "function") {
+              p.catch(function () { });
+            }
+          }
+        }
+        function show(i) {
+          var nextIdx = (i % n + n) % n;
+          var changed = nextIdx !== idx;
+          idx = nextIdx;
+          pauseVideos(root);
+          slides.forEach(function (s, j) {
+            s.classList.toggle("active", j === idx);
+          });
+          dots.forEach(function (d, j) {
+            d.classList.toggle("active", j === idx);
+          });
+          playActiveSlide(changed);
+        }
+        if (prev) prev.addEventListener("click", function () { show(idx - 1); });
+        if (next) next.addEventListener("click", function () { show(idx + 1); });
+        dots.forEach(function (d, j) {
+          d.addEventListener("click", function () { show(j); });
+        });
+        show(0);
+      });
+
+      // Force-centric switcher
+      (function () {
+        var container = document.getElementById("force-switcher");
+        if (!container) return;
+        var slides = container.querySelectorAll(".force-slide");
+        var dots = container.querySelectorAll(".force-dot");
+        var n = slides.length;
+        var idx = 0;
+        function showForce(i) {
+          var nextIdx = (i % n + n) % n;
+          var changed = nextIdx !== idx;
+          idx = nextIdx;
+          slides.forEach(function (s, j) {
+            var v = s.querySelector("video");
+            if (j === idx) {
+              s.style.display = "block";
+              if (v) {
+                try {
+                  if (changed) v.currentTime = 0;
+                  if (v.paused) v.play();
+                } catch (e) {}
+              }
+            } else {
+              s.style.display = "none";
+              if (v) { try { v.pause(); } catch (e) {} }
+            }
+          });
+          dots.forEach(function (d, j) {
+            d.style.background = (j === idx) ? "#444" : "#c8c8c8";
+          });
+        }
+        document.getElementById("force-prev").addEventListener("click", function () { showForce(idx - 1); });
+        document.getElementById("force-next").addEventListener("click", function () { showForce(idx + 1); });
+        dots.forEach(function (d, j) { d.addEventListener("click", function () { showForce(j); }); });
+        showForce(0);
+      })();
+    })();
+  </script>
+
+</body>
+
+</html>
