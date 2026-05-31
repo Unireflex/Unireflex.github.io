@@ -762,7 +762,7 @@
       <b>UniReflex Architecture.</b> We hook the deep feature map of the generative action head to extract an intent tensor. 
       The reflex GRU consumes proprioception and this intent tensor to emit reference poses, reference wrenches, and 
       stiffness encodings for decoupled force control. The system operates in a tri-rate closed loop: slow visual
-      planning, fast reflex prediction, and PID force tracking (~1 kHz).
+      planning, fast reflex prediction, and PID force tracking.
     </p>
     <p class="section-note">
       The key idea is to separate <i>what the robot should do</i> from <i>how contact should be regulated</i>. The frozen
