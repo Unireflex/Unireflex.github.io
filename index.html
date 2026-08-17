@@ -13,7 +13,6 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png?v=20260525" />
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400&display=swap"
     rel="stylesheet">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style type="text/css">
   body {
@@ -153,39 +152,318 @@
   }
 
   .section-note {
-    color: #333;
-    line-height: 1.55;
-    margin-top: 4px;
-    margin-bottom: 14px;
+    color: #444;
+    font-size: 15.5px;
+    line-height: 1.5;
+    margin: 0 0 8px;
   }
 
   .figure-note {
-    color: #555;
-    font-size: 16px;
+    color: #666;
+    font-size: 14.5px;
     line-height: 1.45;
-    margin: 6px auto 18px;
-    max-width: 860px;
-    text-align: justify;
-  }
-
-  .question-list {
-    margin: 12px 0 20px 22px;
-    padding: 0;
-  }
-
-  .question-item {
-    margin: 6px 0;
-    line-height: 1.45;
-  }
-
-  .question-item b {
-    color: #1367a7;
-    margin-right: 6px;
+    margin: 6px auto 0;
+    max-width: 900px;
+    text-align: left;
+    font-style: italic;
   }
 
   .figure-note b,
-  .section-note b {
+  .fig-note b {
+    font-style: normal;
+  }
+
+  .question-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 24px;
+    margin: 6px 0 14px;
+    padding: 0;
+    list-style: none;
+    max-width: 100%;
+  }
+
+  .question-item {
+    margin: 0;
+    line-height: 1.45;
+    font-size: 15.5px;
+    color: #444;
+    padding: 4px 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  .question-item b,
+  .q-label {
     color: #1367a7;
+    margin-right: 6px;
+    font-weight: 700;
+  }
+
+  .figure-note b,
+  .section-note b,
+  .fig-note b,
+  .exp-block-title .q-label {
+    color: #1367a7;
+  }
+
+  .exp-block {
+    margin: 0 0 18px;
+    padding: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .exp-block-title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e8e8e8;
+    letter-spacing: -0.2px;
+  }
+
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 14px auto 16px;
+    max-width: 900px;
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    height: 38px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid #d0d7de;
+    background: #fff;
+    color: #1367a7 !important;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .link-btn:hover {
+    background: #f4f8fb;
+    border-color: #1367a7;
+    color: #0f568c !important;
+  }
+
+  .paper-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e6e8eb;
+    border-radius: 8px;
+    background: #fff;
+    margin: 0 auto 4px;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  table.paper-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 12px;
+    line-height: 1.2;
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  table.paper-table caption {
+    caption-side: top;
+    text-align: left;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 12px 8px;
+  }
+
+  table.paper-table th,
+  table.paper-table td {
+    padding: 4px 3px;
+    border-bottom: 1px solid #eef1f4;
+    text-align: center;
+    white-space: nowrap;
+    color: #333;
+  }
+
+  table.paper-table th:first-child,
+  table.paper-table td:first-child {
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 6px;
+  }
+
+  table.paper-table thead th {
+    background: #f7f8fa;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #dde2e8;
+  }
+
+  table.paper-table thead tr.subhead th {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    background: #fbfbfc;
+  }
+
+  table.paper-table tr.group-gap td {
+    border-top: 1px solid #dde2e8;
+  }
+
+  table.paper-table tr.best td {
+    background: #f1f8f2;
+    font-weight: 700;
+    color: #215c38;
+  }
+
+  table.paper-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  table.paper-table.compact th,
+  table.paper-table.compact td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+
+  /* Prevent global `div { max-width:95%; padding:10px }` from hollowing out content */
+  #abstract,
+  #intro,
+  #method,
+  #experiments,
+  #exp,
+  #force_tracking,
+  #reference-force,
+  #high-frequency {
+    max-width: 900px;
+    width: 900px;
+    padding: 4px 0 10px;
+    box-sizing: border-box;
+  }
+
+  #experiments .table-like,
+  #intro .table-like,
+  #method .table-like,
+  #experiments .two-col-figures,
+  #experiments .fig-col,
+  #experiments .paper-table-wrap,
+  #intro .paper-table-wrap,
+  #experiments .exp-block,
+  #intro .taxonomy-wrap {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  #experiments img.rounded,
+  #method img.rounded,
+  #intro img.rounded {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #experiments .exp-block:last-child {
+    margin-bottom: 8px;
+  }
+
+  #experiments h1,
+  #intro h1,
+  #method h1,
+  #abstract h1,
+  #exp h1 {
+    margin: 6px 0 10px;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    max-width: 1100px;
+    margin: 10px auto;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  }
+
+  .taxonomy-wrap {
+    margin: 10px auto 4px;
+    max-width: 900px;
+  }
+
+  table.taxonomy-table {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  table.taxonomy-table caption {
+    font-size: 15px;
+    padding: 12px 14px 8px;
+  }
+
+  table.taxonomy-table th,
+  table.taxonomy-table td {
+    padding: 7px 6px;
+    white-space: normal;
+    vertical-align: middle;
+  }
+
+  table.taxonomy-table th:nth-child(n+3),
+  table.taxonomy-table td:nth-child(n+3) {
+    width: 9%;
+    text-align: center;
+  }
+
+  table.taxonomy-table th:first-child,
+  table.taxonomy-table td:first-child {
+    width: 22%;
+  }
+
+  table.taxonomy-table th:nth-child(2),
+  table.taxonomy-table td:nth-child(2) {
+    text-align: left;
+    width: 24%;
+  }
+
+  table.taxonomy-table tr.cat-row td {
+    text-align: left;
+    background: #f7f8fa;
+    color: #222;
+    font-size: 12.5px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #e2e6eb;
+  }
+
+  table.taxonomy-table tr.ours-row td {
+    background: #fff6d6;
+    border-top: 1px solid #e8d9a0;
+  }
+
+  table.taxonomy-table .mark-yes {
+    color: #1a7a3c;
+    font-weight: 700;
+  }
+
+  table.taxonomy-table .mark-no {
+    color: #999;
+  }
+
+  @media screen and (max-width: 780px) {
+    .question-list {
+      grid-template-columns: 1fr;
+    }
   }
 
   a:link,
@@ -238,13 +516,6 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-  }
-
-  hr {
-    border: 0;
-    height: 1px;
-    max-width: 1100px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
   }
 
   #authors td {
@@ -420,6 +691,247 @@
 
   .table-figure-wrap {
     margin: 0 0 32px;
+  }
+
+  .two-col-figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    margin: 8px auto 4px;
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  #experiments .two-col-figures,
+  #experiments .two-col-figures .fig-col {
+    max-width: none;
+  }
+
+  #experiments .two-col-figures {
+    max-width: 900px;
+  }
+
+  .two-col-figures .fig-col {
+    flex: 1 1 0;
+    width: calc(50% - 8px);
+    max-width: calc(50% - 8px);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .two-col-figures .fig-col img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  .two-col-figures .fig-note {
+    font-size: 13.5px;
+    color: #666;
+    line-height: 1.4;
+    margin: 8px 0 0;
+    text-align: left;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 780px) {
+    .two-col-figures .fig-col {
+      width: 100%;
+      max-width: 100%;
+      flex: 1 1 100%;
+    }
+  }
+
+  .result-table-wrap {
+    width: 100%;
+    max-width: 900px;
+    margin: 18px auto 8px;
+    overflow-x: auto;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  .result-table-caption {
+    margin: 0;
+    padding: 14px 16px 8px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #222;
+    text-align: left;
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  table.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.35;
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  table.result-table th,
+  table.result-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #ececec;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  table.result-table th:first-child,
+  table.result-table td:first-child {
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  table.result-table thead th {
+    background: #f6f8fa;
+    font-weight: 600;
+    color: #222;
+    border-bottom: 1px solid #d8dde3;
+  }
+
+  table.result-table tr.section-row td {
+    background: #f0f4f8;
+    color: #35506b;
+    font-weight: 600;
+    font-size: 13.5px;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  table.result-table tr.best td {
+    background: #e8f6ea;
+    font-weight: 700;
+    color: #17633a;
+  }
+
+  table.result-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  @media screen and (max-width: 720px) {
+    table.result-table {
+      font-size: 13px;
+    }
+
+    table.result-table th,
+    table.result-table td {
+      padding: 8px 8px;
+    }
+  }
+
+  .author-block {
+    max-width: 960px;
+    margin: 8px auto 4px;
+    padding: 6px 16px 2px;
+    text-align: center;
+  }
+
+  .author-names {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 28px;
+    margin: 6px 0 10px;
+  }
+
+  .author-names .author {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.3;
+  }
+
+  .author-names a.author-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .author-names a.author-link:hover {
+    color: #1367a7;
+    border-bottom-color: #1367a7;
+  }
+
+  .author-names .author .aff {
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+    vertical-align: super;
+  }
+
+  .author-affiliations {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.55;
+    margin: 4px auto 10px;
+    max-width: 820px;
+  }
+
+  .author-note {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 14px;
+  }
+
+  .affil-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 18px 34px;
+    margin: 8px auto 6px;
+    padding: 8px 0 4px;
+  }
+
+  .affil-logos a,
+  .affil-logos .logo-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .affil-logos img {
+    display: block;
+    max-height: 62px;
+    width: auto;
+    max-width: 210px;
+    object-fit: contain;
+    padding: 0;
+    margin: 0;
+  }
+
+  .affil-logos img.logo-seal {
+    max-height: 66px;
+  }
+
+  .affil-logos img.logo-wide {
+    max-height: 50px;
+    max-width: 210px;
+  }
+
+  @media screen and (max-width: 720px) {
+    .author-names .author {
+      font-size: 18px;
+    }
+
+    .affil-logos img {
+      max-height: 50px;
+      max-width: 160px;
+    }
   }
 
   .video-matrix {
@@ -688,27 +1200,40 @@
     </video>
   </div>
 
-  <!--
-  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
+  <div class="author-block">
     <hr>
-    <center><span style="font-size:25px" class="line-break">
-        Anonymous authors (CORL 2026 double-blind submission)
-      </span></center>
-  </div>
-  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
-    <hr>
-    <center><span style="font-size:20px" class="line-break">Affiliations omitted for review</span>
-    </center>
-  </div>
-  -->
-  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
-    <hr>
-    <center><span style="font-size:25px" class="line-break">&nbsp;&nbsp;&nbsp;&nbsp;[<a href="https://openreview.net/forum?id=enmcD2t3Gh&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3Drobot-learning.org%2FCoRL%2F2026%2FConference%2FAuthors%23your-submissions)" target="_blank" rel="noopener noreferrer">Paper</a>]</span><span style="font-size:25px"
-        class="line-break">&nbsp;&nbsp;&nbsp;&nbsp;[Code (coming in September)]</span></center>
+    <div class="author-names">
+      <span class="author"><a class="author-link" href="https://huangyan28.github.io/" target="_blank" rel="noopener noreferrer">Yan Huang</a><span class="aff">1,†</span></span>
+      <span class="author"><a class="author-link" href="https://www.shoujie.top/" target="_blank" rel="noopener noreferrer">Shoujie Li</a><span class="aff">2,†</span></span>
+      <span class="author">Ziwu Song<span class="aff">1,3</span></span>
+      <span class="author"><a class="author-link" href="https://ssr-group.net/" target="_blank" rel="noopener noreferrer">Wenbo Ding</a><span class="aff">1,4,*</span></span>
+    </div>
+    <div class="author-affiliations">
+      <sup>1</sup>Tsinghua University Shenzhen International Graduate School &nbsp;&nbsp;
+      <sup>2</sup>Nanyang Technological University<br>
+      <sup>3</sup>X Square Robot &nbsp;&nbsp;
+      <sup>4</sup>Xspark AI
+    </div>
+    <div class="affil-logos">
+      <a class="logo-item" href="https://www.tsinghua.edu.cn/" target="_blank" rel="noopener noreferrer" title="Tsinghua University">
+        <img class="logo-seal" src="assets/img/logos/tsinghua.png?v=20260817b" alt="Tsinghua University">
+      </a>
+      <a class="logo-item" href="https://www.ntu.edu.sg/" target="_blank" rel="noopener noreferrer" title="Nanyang Technological University">
+        <img class="logo-wide" src="assets/img/logos/ntu.png?v=20260817b" alt="Nanyang Technological University">
+      </a>
+      <a class="logo-item" href="https://x2robot.com/" target="_blank" rel="noopener noreferrer" title="X Square Robot">
+        <img class="logo-wide" src="assets/img/logos/xsquare.svg?v=20260817b" alt="X Square Robot">
+      </a>
+      <a class="logo-item" href="https://xsparkai.com/" target="_blank" rel="noopener noreferrer" title="Xspark AI">
+        <img class="logo-wide" src="assets/img/logos/xspark_official.png?v=20260817b" alt="Xspark AI">
+      </a>
+    </div>
+    <p class="author-note"><sup>†</sup>Equal contribution &nbsp;&nbsp; <sup>*</sup>Corresponding author</p>
   </div>
 
-  <div class="table-like" style="justify-content:space-evenly;max-width:900px;margin:auto;">
-    <hr>
+  <div class="link-row">
+    <a class="link-btn" href="https://openreview.net/forum?id=enmcD2t3Gh" target="_blank" rel="noopener noreferrer">Paper</a>
+    <span class="link-btn" style="opacity:0.72;cursor:default;">Code · Oct</span>
   </div>
 
   <div style="width:900px; margin:0 auto" id="abstract" align="justify">
@@ -743,13 +1268,71 @@
       with the main backbone. UniReflex follows a different route: it keeps the pre-trained generative policy untouched
       and adds a lightweight reflex layer that translates its latent intent into contact-aware force regulation.
     </p>
-    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
-      <img src="assets/img/table_compare.png?v=2026052619" loading="lazy" alt="Taxonomy of force-control methods" class="rounded" style="width:900px;">
+    <div class="paper-table-wrap taxonomy-wrap">
+      <table class="paper-table taxonomy-table">
+        <caption>Taxonomy of force control methods</caption>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Representative methods</th>
+            <th>Force<br>ctrl.</th>
+            <th>Closed-<br>loop</th>
+            <th>Variable<br>stiff.</th>
+            <th>Ref.<br>force</th>
+            <th>Plug-<br>play</th>
+            <th>Fast-only<br>training</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-row"><td colspan="8"><b>Variable impedance control</b></td></tr>
+          <tr>
+            <td>Guided Control</td>
+            <td>ACP</td>
+            <td>Active</td><td class="mark-yes">✓</td><td class="mark-yes">✓</td><td class="mark-yes">✓</td><td class="mark-no">✗</td><td class="mark-no">✗</td>
+          </tr>
+          <tr>
+            <td>Hybrid P/F Control</td>
+            <td>ForceVLA2</td>
+            <td>Active</td><td class="mark-yes">✓</td><td class="mark-yes">✓</td><td class="mark-yes">✓</td><td class="mark-no">✗</td><td class="mark-no">✗</td>
+          </tr>
+          <tr class="cat-row"><td colspan="8"><b>Force-conditioned imitation learning</b></td></tr>
+          <tr>
+            <td>Force-aware DP</td>
+            <td>FoAR</td>
+            <td>Passive</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td>
+          </tr>
+          <tr>
+            <td>Force-aware VLA</td>
+            <td>TA-VLA, ForceVLA</td>
+            <td>Passive</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td>
+          </tr>
+          <tr class="cat-row"><td colspan="8"><b>Fast-slow systems</b></td></tr>
+          <tr>
+            <td>Tactile-reactive DP</td>
+            <td>RDP</td>
+            <td>Passive</td><td class="mark-yes">✓</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td>
+          </tr>
+          <tr>
+            <td>VLA-diffusion hybrid</td>
+            <td>RoboDual</td>
+            <td>Passive</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-no">✗</td><td class="mark-yes">✓</td><td class="mark-yes">✓</td>
+          </tr>
+          <tr class="ours-row">
+            <td><b>UniReflex (Ours)</b></td>
+            <td><b>—</b></td>
+            <td><b>Active</b></td>
+            <td class="mark-yes"><b>✓</b></td>
+            <td class="mark-yes"><b>✓</b></td>
+            <td class="mark-yes"><b>✓</b></td>
+            <td class="mark-yes"><b>✓</b></td>
+            <td class="mark-yes"><b>✓</b></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <p class="figure-note">
-      The taxonomy highlights the central design choice of UniReflex: it preserves frozen slow backbones while adding
-      active force control, stiffness modulation, and high-rate proprioceptive feedback. This combination is intended to
-      make force regulation available to different generative policies without re-training the original model.
+      UniReflex uniquely enables active, variable-stiffness control while remaining plug-and-play with frozen
+      generative policies via fast-only training.
     </p>
   </div>
 
@@ -786,67 +1369,78 @@
       <h1>Experiments</h1>
     </center>
     <p>
-      We evaluate UniReflex across five bimanual contact-rich tasks, comparing it against frozen backbones 
-      (DP, \(\pi_0\), DreamZero) and force-aware baselines (ForceVLA, TA-VLA, RDP).
+      We evaluate five contact-rich bimanual benchmarks with frozen generative backbones
+      (DP, \(\pi_0\), DreamZero) and force-aware baselines (RDP, ForceVLA, TA-VLA).
+      Only UniReflex is trained; the slow policy stays frozen.
     </p>
     <p class="section-note">
-      To make the evaluation easier to follow, we organize the results around five questions. The first two ask whether
-      UniReflex improves real robot performance and whether the benchmark covers diverse contact modes. The last three
-      explain why the improvement occurs: training efficiency, contact stabilization, and high-frequency force tracking.
+      Following the paper, results are organized around <b>six questions</b>:
     </p>
     <ul class="question-list">
-      <li class="question-item">
-        <b>Q1.</b> Can UniReflex improve frozen generative backbones on contact-rich manipulation tasks?
-      </li>
-      <li class="question-item">
-        <b>Q2.</b> Does the evaluation cover diverse contact modes rather than a single narrow skill?
-      </li>
-      <li class="question-item">
-        <b>Q3.</b> Can the plug-in reflex be trained efficiently without backpropagating through the frozen backbone?
-      </li>
-      <li class="question-item">
-        <b>Q4.</b> How does UniReflex stabilize execution when contact, friction, or object motion creates disturbances?
-      </li>
-      <li class="question-item">
-        <b>Q5.</b> Does the fast reflex track task-dependent reference forces at the contact timescale?
-      </li>
+      <li class="question-item"><b>Q1</b> Phase&nbsp;I / Phase&nbsp;II task performance with frozen backbones</li>
+      <li class="question-item"><b>Q2</b> Comparison against monolithic force-aware baselines</li>
+      <li class="question-item"><b>Q3</b> Component ablations (stiffness, wrench, gating)</li>
+      <li class="question-item"><b>Q4</b> Recovery under dynamic disturbance and TCP bias</li>
+      <li class="question-item"><b>Q5</b> Interaction-time force tracking</li>
+      <li class="question-item"><b>Q6</b> Training throughput vs. joint fine-tuning</li>
     </ul>
 
-    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
-      <img src="assets/img/table_success_rate.png?v=2026052619" loading="lazy" alt="Success rate comparison" class="rounded" style="width:900px;">
+    <div class="exp-block">
+      <div class="table-like" style="justify-content:space-evenly;margin:8px auto 0;padding:0;">
+        <img src="assets/img/tasks.jpg?v=2026052621" loading="lazy" alt="Evaluation tasks" class="rounded" style="width:900px;">
+      </div>
+      <p class="figure-note">
+        Five tasks cover sustained wiping, peeling, insertion, and impact/flip.
+        Phase&nbsp;I is approach/alignment; Phase&nbsp;II is force-regulated contact.
+      </p>
     </div>
-    <p class="figure-note">
-      <b>Q1.</b> Across tasks, UniReflex improves frozen backbones most strongly in phases that require sustained contact, such as
-      pressing, wiping, peeling, and insertion. The comparison separates the benefit of adding force feedback from the
-      choice of the underlying generative policy.
-    </p>
 
-    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
-      <img src="assets/img/tasks.jpg?v=2026052621" loading="lazy" alt="Evaluation tasks" class="rounded" style="width:900px;">
+    <div class="exp-block">
+      <div class="exp-block-title"><span class="q-label">Q1–Q2</span> Success rates on contact-rich benchmarks</div>
+      <div class="table-like" style="justify-content:space-evenly;margin:0 auto;padding:0;">
+        <img src="assets/img/table_success_rate.png?v=20260817q1" loading="lazy" alt="Table 2 success rates" class="rounded" style="width:900px;">
+      </div>
+      <p class="figure-note">
+        <b>Q1.</b> Phase&nbsp;I stays within ~10 points of each frozen backbone; Phase&nbsp;II rises by 20–60 points on sustained-contact tasks.
+        <b>Q2.</b> Against RDP / ForceVLA / TA-VLA, UniReflex keeps planner-level Phase&nbsp;I quality and matches or exceeds the best monolithic Phase&nbsp;II numbers.
+      </p>
     </div>
-    <p class="figure-note">
-      <b>Q2.</b> The benchmark covers complementary contact modes: brief impacts, sustained normal force, tangential wiping,
-      insertion under alignment error, and delicate peeling. These tasks stress different failure modes of position-only
-      policies, making them useful for evaluating whether force regulation is truly general.
-    </p>
 
-    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
-      <img src="assets/img/table_speed.png?v=2026052619" loading="lazy" alt="Training efficiency" class="rounded" style="width:900px;">
+    <div class="exp-block">
+      <div class="exp-block-title"><span class="q-label">Q3–Q4</span> Ablations and recovery</div>
+      <div class="two-col-figures">
+        <div class="fig-col">
+          <img src="assets/img/table_ablation.png?v=20260817q6c" loading="lazy" alt="Table 3 component ablations" class="rounded">
+          <p class="fig-note"><b>Q3.</b> Stiffness / wrench / gating ablations under frozen DP.</p>
+        </div>
+        <div class="fig-col">
+          <img src="assets/img/table_recovery.png?v=20260817q6c" loading="lazy" alt="Table 4 recovery" class="rounded">
+          <p class="fig-note"><b>Q4.</b> Dynamic recovery 80–100% (0.87–1.28&nbsp;s); TCP-bias Phase&nbsp;II 70–90%.</p>
+        </div>
+      </div>
     </div>
-    <p class="figure-note">
-      <b>Q3.</b> Because UniReflex trains only the reflex branch, it avoids the expensive backward pass through the large frozen
-      generative backbone. This is why the method can add contact behavior with substantially lower per-step training
-      latency than joint force-policy training.
-    </p>
 
-    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
-      <img src="assets/img/q3q4.jpg?v=2026052621" loading="lazy" alt="Qualitative results" class="rounded" style="width:900px;">
+    <div class="exp-block">
+      <div class="exp-block-title"><span class="q-label">Q4–Q5</span> High-frequency reflex and force tracking</div>
+      <div class="table-like" style="justify-content:space-evenly;margin:0 auto;padding:0;">
+        <img src="assets/img/q3q4.jpg?v=2026052621" loading="lazy" alt="High-frequency reflex and force tracking" class="rounded" style="width:900px;">
+      </div>
+      <p class="figure-note">
+        <b>Q4–Q5.</b> Fast corrections under disturbance; peel-force tracking closer than frozen baselines;
+        measured \(F_x,F_y,F_z\) aligned with UniReflex references.
+      </p>
     </div>
-    <p class="figure-note">
-      <b>Q4.</b> The qualitative traces illustrate how the fast reflex stabilizes execution after contact. Instead of waiting for
-      the slow visual policy to correct every disturbance, UniReflex modulates force and stiffness immediately, keeping
-      the robot in a usable contact regime.
-    </p>
+
+    <div class="exp-block">
+      <div class="exp-block-title"><span class="q-label">Q6</span> Training throughput</div>
+      <div class="table-like" style="justify-content:space-evenly;margin:0 auto;padding:0;">
+        <img src="assets/img/table_speed.png?v=20260817q6fill" loading="lazy" alt="Table 5 training throughput" class="rounded" style="width:900px;">
+      </div>
+      <p class="figure-note">
+        <b>Q6.</b> Training only the fast GRU gives about 25–66&times; lower per-step backward latency than joint fine-tuning,
+        while updating only 0.188–0.375% as many parameters as the backbone.
+      </p>
+    </div>
   </div>
 
   <div style="width:100%;max-width:900px;margin:0 auto;padding:0;box-sizing:border-box;" id="exp" align="justify">
@@ -1175,7 +1769,7 @@
       <h1>High-frequency reflex response</h1>
     </center>
     <p class="section-note">
-      <b>Q5.</b> The fast reflex runs at a higher rate than visual policy inference, so it can respond to disturbances while the
+      <b>Q4.</b> The fast reflex runs at a higher rate than visual policy inference, so it can respond to disturbances while the
       slow planner continues to provide the global trajectory. This clip emphasizes the temporal advantage of the
       fast-slow design: corrections happen at the contact timescale, not only at the next camera-driven action update.
     </p>
