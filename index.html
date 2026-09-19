@@ -1199,6 +1199,7 @@
     </h1>
   </div>
 
+  <!-- Author names, affiliations, and logos omitted for double-blind review.
   <div class="author-block">
     <div class="author-names">
       <span class="author"><a class="author-link" href="https://huangyan28.github.io/" target="_blank" rel="noopener noreferrer">Yan Huang</a><span class="aff">1,†</span></span>
@@ -1228,10 +1229,11 @@
     </div>
     <p class="author-note"><sup>†</sup>Equal contribution &nbsp;&nbsp; <sup>*</sup>Corresponding author</p>
   </div>
+  -->
 
   <div class="link-row">
     <a class="link-btn" href="https://arxiv.org/html/2608.17432v1" target="_blank" rel="noopener noreferrer">Paper</a>
-    <span class="link-btn" style="opacity:0.72;cursor:default;">Code · Oct</span>
+    <span class="link-btn" style="opacity:0.72;cursor:default;">Code (coming soon)</span>
   </div>
 
   <div class="table-like" id="video" style="justify-content:space-evenly;max-width:800px;margin:auto;">
@@ -1253,6 +1255,14 @@
       Furthermore, UniReflex integrates an adaptive gating mechanism that enables seamless transitions between position-dominant planning and force-dominant execution.
       Real-world bimanual experiments demonstrate that UniReflex significantly improves contact stability and success rates while preserving original position accuracy.
       Notably, our approach achieves 25&ndash;66&times; lower per-step backward latency relative to joint training strategies on the evaluated backbones.
+    </p>
+    <div class="table-like" style="justify-content:space-evenly;margin:20px auto;padding:0px;">
+      <img src="assets/img/simple_overview.png?v=20260919" loading="lazy" alt="UniReflex plug-and-play overview" class="rounded" style="width:900px;">
+    </div>
+    <p class="figure-note">
+      UniReflex is a plug-and-play force-control module for frozen generative policies. It converts teleoperation data
+      into reference pose, force, and stiffness, and uses adaptive gating to shift from pose-dominant free-space
+      motion to force-dominant contact execution.
     </p>
   </div>
 
